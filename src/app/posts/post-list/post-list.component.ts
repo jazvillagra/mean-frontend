@@ -1,0 +1,18 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-post-list',
+  templateUrl: './post-list.component.html',
+  styleUrls: ['./post-list.component.css']
+})
+export class PostListComponent {
+  posts = [
+    { title: 'This is the first title',
+      content: 'This is the first description'},
+    { title: 'This is the second title',
+      content: 'This is the second description'},
+    { title: 'This is the third title',
+      content: 'This is the third description'},
+  ];
+
+}
