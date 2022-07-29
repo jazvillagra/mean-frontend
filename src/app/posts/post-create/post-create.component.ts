@@ -1,7 +1,7 @@
-import { formatCurrency } from "@angular/common";
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Post } from '../post.model';
+import { PostService } from "../post.service";
 
 @Component({
   selector: 'app-post-create',
@@ -11,9 +11,7 @@ import { Post } from '../post.model';
 export class PostCreateComponent {
   enteredTitle = '';
   enteredContent = '';
-
-  @Output()
-  postCreated = new EventEmitter<Post>();
+  constructor(public postService: PostService){}
 
   onAddPost(postForm: NgForm){
     if(postForm.invalid){
@@ -23,6 +21,6 @@ export class PostCreateComponent {
       title: postForm.value.title,
       content: postForm.value.content
     };
-    this.postCreated.emit(post);
+    this.postService.addPost(postForm.value.title, postForm.value.content);
   }
 }
