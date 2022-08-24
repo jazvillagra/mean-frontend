@@ -12,7 +12,10 @@ export class PostService{
   constructor(private http: HttpClient) {}
 
   getPosts() {
-    this.http.get<{message: string, posts: any}>('http://localhost:3000/api/posts')
+    this.http
+      .get<{ message: string; posts: any }>(
+        "http://localhost:3000/api/posts"
+      )
       .pipe(map((postData) => {
         return postData.posts.map((post: { title: any; content: any; _id: any; }) => {
           return {
@@ -21,9 +24,10 @@ export class PostService{
             id: post._id
           };
         });
-      })).subscribe((transformedPost) => {
-        this.posts = transformedPost.posts;
-        this.postsUpdated.next([...this.posts])
+      }))
+      .subscribe(transformedPosts => {
+        this.posts = transformedPosts;
+        this.postsUpdated.next([...this.posts]);
       });
   }
 
@@ -31,12 +35,24 @@ export class PostService{
     return this.postsUpdated.asObservable();
   }
 
-  addPost(id: string, title: string, content: string) {
-    const post: Post = {id: '', title: title, content: content};
-    this.http.post('http://localhost:3000/api/posts', post)
+  addPost(title: string, content: string) {
+    const post: Post = {id: null, title: title, content: content};
+    this.http
+      .post<{ message: string, postId: string}>('http://localhost:3000/api/posts', post)
       .subscribe((responseData) => {
-        console.log('Response data: ', responseData);
+        console.log(responseData.postId);
+
+        post.id = responseData.postId;
+        console.log("POST ID: ", post.id)
         this.posts.push(post);
+        this.postsUpdated.next([...this.posts]);
+      });
+  }
+
+  deletePost(id: string){
+    this.http.delete("http://localhost:3000/api/posts/" + id)
+      .subscribe(() => {
+        this.posts = this.posts.filter(post => post.id !== id);
         this.postsUpdated.next([...this.posts]);
       });
   }
