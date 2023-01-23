@@ -108,10 +108,6 @@ export class PostService{
         this.postsUpdated.next([...this.posts]);
         this.router.navigate(["/"]);
       });
-      this.router.navigate(["/"]);
   }
 
-  uploadImage(){
-
-  }
 }

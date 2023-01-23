@@ -60,8 +60,6 @@ export class PostCreateComponent implements OnInit{
             image: this.post.imagePath
           });
         });
-        //spinner end
-        this.isLoading = false;
       } else {
         this.postId = '';
         this.mode = 'create';
